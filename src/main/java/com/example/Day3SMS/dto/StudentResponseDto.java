@@ -1,6 +1,6 @@
 package com.example.Day3SMS.dto;
 
-public record StudentResponseDto<S>(
+public record StudentResponseDto(
         String id,
         String name,
         int age,

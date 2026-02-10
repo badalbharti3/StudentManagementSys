@@ -8,7 +8,15 @@
 
 <body class="bg-gray-100">
 
-    <div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+    <!-- Logout Button -->
+    <div class="max-w-md mx-auto mt-4 flex justify-end">
+        <button onclick="logout()"
+                class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+            Logout
+        </button>
+    </div>
+
+    <div class="max-w-md mx-auto mt-4 bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-2xl font-bold mb-6 text-center">Add New Student</h1>
 
         <form id="studentForm" class="space-y-4">
@@ -52,6 +60,32 @@
     </div>
 
     <script>
+        // Check if user is logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userEmail');
+            alert('Logged out successfully');
+            window.location.href = 'login.html';
+        }
+
+        // Helper function to get auth headers
+        function getAuthHeaders() {
+            const token = localStorage.getItem('authToken');
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            };
+        }
+
         document.getElementById("studentForm").addEventListener("submit", function(e) {
             e.preventDefault();
 
@@ -62,11 +96,9 @@
                 email: document.getElementById("email").value
             };
 
-            fetch("http://localhost:8080/add-student", {
+            fetch("http://localhost:8080/students", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(studentData)
             })
             .then(response => {
