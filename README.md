@@ -11,7 +11,7 @@ A Spring Boot application for managing student records with REST API endpoints.
 ## Technologies Used
 - Spring Boot
 - Spring Data JPA
-- MySQL/H2 Database
+- MongoDB Database
 - REST API
 
 ## Frontend
